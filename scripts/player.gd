@@ -1,15 +1,16 @@
 
-extends RigidBody3D
+extends CharacterBody3D
 
 const JUMP_VELOCITY = 4.5
 
 @onready var pov : Node3D = $pov
 @onready var floor_sensor : ShapeCast3D = $floor_sensor
 @onready var ledge_sensor : ShapeCast3D = $ledge_sensor
+@onready var gravity_strength : float = ProjectSettings.get_setting("physics/3d/default_gravity") * 0.02
 
-@export var walk_slow_speed : float = 40.0
-@export var walk_fast_speed : float = 60.0
-@export var walk_damp : float = 7.0
+@export var walk_slow_speed : float = 1.0
+@export var walk_fast_speed : float = 1.5
+@export var walk_damp : float = 0.2
 @export_range(0, 1, 0.025) var walk_air_control : float = 0.125
 
 @export var turn_speed : float = 1.0
@@ -30,16 +31,11 @@ var is_sprinting : bool :
 		_is_sprinting = value
 
 
-var is_on_floor : bool :
-	get: return floor_sensor.is_colliding()
-
-
 var walk_speed : float :
 	get: return walk_fast_speed if is_sprinting else walk_slow_speed
 
 
 func _ready() -> void:
-	# floor_sensor.
 	pass
 
 
@@ -63,27 +59,30 @@ func _physics_process(delta: float) -> void:
 	pov.rotation_degrees = Vector3(clamp(pov.rotation_degrees.x, -90, 90), pov.rotation_degrees.y, pov.rotation_degrees.z)
 	turn_mouse_axis = Vector2.ZERO
 
-	var walk_axis := Input.get_vector("strafe_left", "strafe_right", "walk_forward", "walk_back")
-	var walk_vector := (transform.basis * Vector3(walk_axis.x, 0, walk_axis.y))
+	var walk_input := Input.get_vector("strafe_left", "strafe_right", "walk_forward", "walk_back")
+	var walk_vector := transform.basis * Vector3(walk_input.x, 0, walk_input.y)
 
-	var floor_scalar = 1.0 if is_on_floor else walk_air_control
-	self.apply_force(walk_vector * walk_speed * floor_scalar)
-	self.apply_force(-self.linear_velocity * (Vector3.ONE - Vector3.UP) * walk_damp * floor_scalar)
+	var floor_scalar := 1.0 if is_on_floor() else walk_air_control
 
-	if is_on_floor:
+	self.velocity += walk_vector * walk_speed * floor_scalar
+	self.velocity -= self.velocity * (Vector3.ONE - Vector3.UP) * walk_damp * floor_scalar
+
+	if is_on_floor():
 		is_ledgegrab_exhausted = false
-	elif walk_axis:
-		try_ledgegrab()
+	else:
+		self.velocity -= self.up_direction * gravity_strength
+		if walk_input:
+			try_ledgegrab()
+
+	move_and_slide()
 
 func try_ledgegrab() -> void:
-	if is_ledgegrab_exhausted or is_on_floor or self.linear_velocity.y >= 0.0 or not ledge_sensor.is_colliding(): return
-
-
-	self.linear_velocity = self.linear_velocity * (Vector3.ONE - Vector3.UP)
-	self.apply_impulse(Vector3.UP * ledgegrab_strength)
+	if is_ledgegrab_exhausted or is_on_floor() or self.velocity.y >= 0.0 or not ledge_sensor.is_colliding(): return
 	is_ledgegrab_exhausted = true
+
+	self.velocity.y = ledgegrab_strength
 
 
 func try_jump() -> void:
-	if not is_on_floor: return
-	self.apply_impulse(Vector3.UP * jump_strength)
+	if not is_on_floor(): return
+	self.velocity.y = jump_strength
