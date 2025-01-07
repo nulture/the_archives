@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dmad8o0p0el54"]
+[gd_scene load_steps=10 format=3 uid="uid://dmad8o0p0el54"]
 
 [ext_resource type="Material" uid="uid://do6rreoj2soij" path="res://assets/materials/square_tiles_03.tres" id="1_vhy75"]
 [ext_resource type="PackedScene" uid="uid://bowekhs5mnpfs" path="res://scenes/player.tscn" id="2_musby"]
@@ -21,6 +21,10 @@ tonemap_mode = 2
 material = ExtResource("1_vhy75")
 size = Vector2(20, 20)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_mqss7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_6dohc"]
+
 [node name="world" type="Node3D"]
 
 [node name="environment" type="WorldEnvironment" parent="."]
@@ -34,6 +38,24 @@ shape = SubResource("WorldBoundaryShape3D_f88fs")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="world_floor"]
 mesh = SubResource("PlaneMesh_hlmlc")
 skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_mqss7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_6dohc")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(5.89036, 0, 0, 0, 0.890141, -2.1394, 0, 0.455685, 4.17914, 4.28234, 0.553404, -5.27885)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+shape = SubResource("BoxShape3D_mqss7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+mesh = SubResource("BoxMesh_6dohc")
 
 [node name="player" parent="." instance=ExtResource("2_musby")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
