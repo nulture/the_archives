@@ -1,0 +1,39 @@
+[gd_scene load_steps=8 format=3 uid="uid://dmad8o0p0el54"]
+
+[ext_resource type="Material" uid="uid://do6rreoj2soij" path="res://assets/materials/square_tiles_03.tres" id="1_vhy75"]
+[ext_resource type="PackedScene" uid="uid://bowekhs5mnpfs" path="res://scenes/player.tscn" id="2_musby"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6jnbb"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_7s3vl"]
+sky_material = SubResource("ProceduralSkyMaterial_6jnbb")
+
+[sub_resource type="Environment" id="Environment_kx60l"]
+background_mode = 2
+sky = SubResource("Sky_7s3vl")
+tonemap_mode = 2
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_f88fs"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hlmlc"]
+material = ExtResource("1_vhy75")
+size = Vector2(20, 20)
+
+[node name="world" type="Node3D"]
+
+[node name="environment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_kx60l")
+
+[node name="world_floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world_floor"]
+shape = SubResource("WorldBoundaryShape3D_f88fs")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="world_floor"]
+mesh = SubResource("PlaneMesh_hlmlc")
+skeleton = NodePath("../..")
+
+[node name="player" parent="." instance=ExtResource("2_musby")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

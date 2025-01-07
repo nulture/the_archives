@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://bowekhs5mnpfs"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_g6rkt"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4ojsg"]
+radius = 0.333
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_x8wxm"]
+radius = 0.3
+
+[node name="player" type="RigidBody3D"]
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+script = ExtResource("1_g6rkt")
+
+[node name="shape" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_4ojsg")
+
+[node name="floor_sensor" type="ShapeCast3D" parent="."]
+shape = SubResource("CapsuleShape3D_x8wxm")
+target_position = Vector3(0, -0.1, 0)
+
+[node name="pov" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.158843)
+
+[node name="camera" type="Camera3D" parent="pov"]
+current = true

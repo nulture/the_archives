@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://do6rreoj2soij"]
+
+[ext_resource type="Texture2D" uid="uid://ca26dm5qoxre7" path="res://assets/textures/square_tiles_03_diff_64.png" id="1_rjsro"]
+[ext_resource type="Texture2D" uid="uid://de37qcpl7vfbb" path="res://assets/textures/square_tiles_03_arm_64.png" id="2_1k2qc"]
+[ext_resource type="Texture2D" uid="uid://3cjayhvf0s48" path="res://assets/textures/square_tiles_03_nor_64.png" id="3_npnq3"]
+
+[resource]
+albedo_texture = ExtResource("1_rjsro")
+metallic = 1.0
+metallic_texture = ExtResource("2_1k2qc")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_1k2qc")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_texture = ExtResource("3_npnq3")
+ao_enabled = true
+ao_texture = ExtResource("2_1k2qc")
+uv1_scale = Vector3(20, 20, 20)
+texture_filter = 0
