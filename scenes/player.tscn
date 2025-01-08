@@ -50,6 +50,7 @@ current = true
 [node name="hands_controller" type="Node" parent="pov/camera" node_paths=PackedStringArray("hand_right")]
 script = ExtResource("2_dfmdk")
 hand_right = NodePath("../arm_r/hand_rest_r/hand_r")
+arm_length = null
 mask = 10
 
 [node name="arm_r" type="Node3D" parent="pov/camera"]

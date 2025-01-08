@@ -46,6 +46,12 @@ var is_rotating : bool :
 		if _is_rotating == value: return
 		_is_rotating = value
 
+var previous_camera_rotation : Vector3
+var delta_camera_rotation : Vector3
+func _physics_process(delta: float) -> void:
+	delta_camera_rotation = camera.global_rotation - previous_camera_rotation
+	previous_camera_rotation = camera.global_rotation
+
 
 func _process(delta: float) -> void:
 	_reached_object = null

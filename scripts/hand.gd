@@ -40,12 +40,15 @@ var grabbed_body : Grabbable :
 
 
 func _physics_process(delta: float) -> void:
-	if hands.is_rotating:
-		if grabbed_body:
+	if grabbed_body:
+		if grabbed_body.take_with_you:
+			grabbed_body.rotation += hands.delta_camera_rotation
+			
+
+		if hands.is_rotating:
 			grabbed_body.apply_torque(hands.camera.global_basis.x * mouse_input.y)
 			grabbed_body.apply_torque(hands.camera.global_basis.y * mouse_input.x)
-		# self.global_rotate(hands.camera.global_basis.x, mouse_input.y * delta)
-		# self.global_rotate(hands.camera.global_basis.y, mouse_input.x * delta)
+
 	mouse_input = Vector2.ZERO
 
 
