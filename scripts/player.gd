@@ -79,7 +79,7 @@ func _physics_process(delta: float) -> void:
 
 
 func try_ledgegrab() -> void:
-	if is_ledgegrab_exhausted or is_on_floor() or self.velocity.y >= 0.0 or not ledge_sensor.is_colliding(): return
+	if is_ledgegrab_exhausted or is_on_floor() or self.velocity.y >= 0.0 or not ledge_sensor.is_colliding() or ledge_sensor.get_closest_collision_unsafe_fraction() > 0.9: return
 	is_ledgegrab_exhausted = true
 
 	self.velocity.y = ledgegrab_strength

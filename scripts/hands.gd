@@ -62,6 +62,7 @@ func _process(delta: float) -> void:
 		rqp.from = camera.global_position
 		rqp.to = rqp.from + camera.project_ray_normal(mouse_position) * arm_length
 		rqp.collision_mask = mask
+		rqp.collide_with_areas = true
 		var result := space.intersect_ray(rqp)
 
 		if not is_rotating:

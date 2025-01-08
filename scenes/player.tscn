@@ -14,8 +14,10 @@ size = Vector3(0.5, 0.01, 0.01)
 radius = 0.15
 
 [sub_resource type="SphereMesh" id="SphereMesh_e1wlp"]
-radius = 0.1
-height = 0.2
+radius = 0.02
+height = 0.04
+radial_segments = 6
+rings = 3
 
 [node name="player" type="CharacterBody3D"]
 collision_layer = 4
@@ -24,14 +26,6 @@ axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
 script = ExtResource("1_g6rkt")
-walk_slow_speed = null
-walk_fast_speed = null
-walk_damp = null
-walk_air_control = null
-turn_speed = null
-mouse_turn_speed = null
-jump_strength = null
-ledgegrab_strength = null
 
 [node name="shape" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_4ojsg")
@@ -50,7 +44,7 @@ current = true
 [node name="hands_controller" type="Node" parent="pov/camera" node_paths=PackedStringArray("hand_right")]
 script = ExtResource("2_dfmdk")
 hand_right = NodePath("../arm_r/hand_rest_r/hand_r")
-arm_length = null
+arm_length = 1.75
 mask = 10
 
 [node name="arm_r" type="Node3D" parent="pov/camera"]
