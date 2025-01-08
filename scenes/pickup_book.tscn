@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dg5lcussej6du"]
 
 [ext_resource type="PackedScene" uid="uid://bedd3sw3jvkjh" path="res://scenes/pickup.tscn" id="1_xfykn"]
-[ext_resource type="Script" path="res://scenes/book_label.gd" id="2_u5mel"]
+[ext_resource type="Script" path="res://scripts/book.gd" id="2_u5mel"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_uv7rx"]
 size = Vector3(0.6, 0.8, 0.2)
@@ -11,14 +11,21 @@ size = Vector3(0.6, 0.8, 0.2)
 
 [node name="pickup" instance=ExtResource("1_xfykn")]
 
-[node name="shape" parent="." index="0"]
+[node name="book" type="Node" parent="." index="0" node_paths=PackedStringArray("title_label", "spine_label")]
+script = ExtResource("2_u5mel")
+title_label = NodePath("../title")
+spine_label = NodePath("../spine")
+title = "The Past And Path Of The Light"
+author = "Ungagoon"
+
+[node name="shape" parent="." index="1"]
 shape = SubResource("BoxShape3D_uv7rx")
 
-[node name="mesh" parent="." index="1"]
+[node name="mesh" parent="." index="2"]
 mesh = SubResource("BoxMesh_frpfb")
 
-[node name="label" type="Label3D" parent="." index="2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.105)
+[node name="title" type="Label3D" parent="." index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0.105)
 pixel_size = 0.002
 shaded = true
 double_sided = false
@@ -27,9 +34,22 @@ alpha_scissor_threshold = 0.05
 texture_filter = 0
 modulate = Color(0, 0, 0, 1)
 outline_modulate = Color(0, 0, 0, 0)
-text = "The Legend of Snotbane"
+text = "The Past And Path Of The Light"
 outline_size = 0
 autowrap_mode = 2
-width = 240.0
-script = ExtResource("2_u5mel")
-title = "The Legend of Snotbane"
+width = 290.0
+
+[node name="spine" type="Label3D" parent="." index="4"]
+transform = Transform3D(-4.37114e-08, 0, -1, -1, -4.37114e-08, 4.37114e-08, -4.37114e-08, 1, 1.91069e-15, -0.301, 0, 0)
+pixel_size = 0.002
+shaded = true
+double_sided = false
+alpha_cut = 1
+alpha_scissor_threshold = 0.05
+texture_filter = 0
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(0, 0, 0, 0)
+text = "Ungagoon"
+outline_size = 0
+autowrap_mode = 2
+width = 290.0

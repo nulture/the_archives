@@ -129,8 +129,3 @@ skeleton = NodePath("../../StaticBody3D")
 
 [node name="pickup2" parent="." instance=ExtResource("6_r62bb")]
 transform = Transform3D(1, 0, 0, 0, 0.758021, 0.652231, 0, -0.652231, 0.758021, -1.00341, 0.504885, -2.9665)
-
-[node name="label" parent="pickup2" index="2"]
-predefined = true
-
-[editable path="pickup2"]

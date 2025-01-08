@@ -1,24 +1,142 @@
 {
-	"verbs": [
-		{
-			"word": "pick",
-			"present": "picks",
-			"past": "picked",
-			"noun": "picking",
-			"genre": "biology"
-		},
-		{
-			"word": "mutate",
-			"present": "mutates",
-			"past": "mutated",
-			"noun": "mutating",
-			"genre": "morph"	
-		}
+	"word_counts": [
+		0.0,
+		1.0,
+		5.0,
+		5.0
 	],
-	"nouns": [
-		{
-			"word": "magic",
-			"genre": "general"
+	"connectors_intro": {
+		"": 1.0,
+		"about": 1.0,
+		"a": 1.0,
+		"the": 1.0,
+		"of": 1.0,
+		"of the": 1.0,
+		"on the subject of": 1.0
+	},
+	"connectors": {
+		"": 1.0,
+		" about": 1.0,
+		" of": 1.0,
+		" of the": 1.0,
+		"'s": 1.0,
+		" and": 1.0,
+		" beyond": 1.0
+	},
+	"noun_suffixes": {
+		"": 7.0,
+		"s": 3.0
+	},
+	"genres": {
+		"general": {
+			"nouns": [
+				"legend",
+				"magick",
+				"study",
+				"speech",
+				"year",
+				"matter",
+				"king",
+				"queen",
+				"game",
+				"light",
+				"dark",
+				"past",
+				"future",
+				"today"
+			]
+		},
+		"alchemy": {
+			"nouns": [
+				"potion",
+				"cauldron",
+				"transmutation",
+				"gold",
+				"silver",
+				"lead",
+				"pewter",
+				"snot",
+				"bile",
+				"flask",
+				"gizzard",
+				"blood",
+				"rust",
+				"acid",
+				"science",
+				"chemical",
+				"alchemy",
+				"bubble",
+				"boil",
+				"water",
+				"element",
+				"nard",
+				"gonad",
+				"scrote",
+				"stomach",
+				"organ",
+				"lung",
+				"fluid"
+			]
+		},
+		"cosmic": {
+			"nouns": [
+				"star",
+				"moon",
+				"body",
+				"path",
+				"track",
+				"sign",
+				"dance",
+				"prediction",
+				"fortnight",
+				"beyond",
+				"telescope",
+				"tower",
+				"cosmos",
+				"crown"
+			]
+		},
+		"nature": {
+			"nouns": [
+				"screebo",
+				"swamp",
+				"miasma",
+				"frog"
+			]
 		}
-	]
+	},
+	"authors": {
+		"first_names": [
+
+		],
+		"last_names": [
+			"alba",
+			"bane",
+			"berry",
+			"bolt",
+			"candle",
+			"doo",
+			"ember",
+			"fig",
+			"goon",
+			"hump",
+			"ickle",
+			"jar",
+			"klutz",
+			"lottle",
+			"mag",
+			"nimpy",
+			"ooby",
+			"pus",
+			"quirk",
+			"rump",
+			"snot",
+			"turt",
+			"unga",
+			"vex",
+			"xan",
+			"york",
+			"zippy"
+		]
+	}
 }
