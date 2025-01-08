@@ -41,6 +41,7 @@ skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -5)
+collision_layer = 17
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_mqss7")
@@ -58,4 +59,4 @@ shape = SubResource("BoxShape3D_mqss7")
 mesh = SubResource("BoxMesh_6dohc")
 
 [node name="player" parent="." instance=ExtResource("2_musby")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1441, -2.938)
