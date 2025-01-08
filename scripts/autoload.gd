@@ -33,9 +33,10 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("quit"):
 		self.get_tree().quit()
 	if event.is_action_pressed("ui_cancel"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		else:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE 
 	# if event.is_action_pressed("fullscreen_exclusive"):
 	# 	self.is_fullscreen_exclusive = true
 	# 	self.is_fullscreen = not self.is_fullscreen

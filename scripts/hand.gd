@@ -1,41 +1,43 @@
-extends Area3D
 
-@onready var origin_node : Node3D = self.get_parent()
+class_name Hand extends CollisionObject3D
 
-@export var is_right_hand : bool
-@export var target_node : Node3D
+@export var hands : Hands
 
-var stored_position : Vector3
+@onready var grip_joint : Generic6DOFJoint3D = $grip_joint
 
-var _is_reaching : bool
-var is_reaching : bool :
-	get: return _is_reaching
+var mouse_input : Vector2
+
+var stored_collision_layer : int
+var stored_collision_mask : int
+var _grabbed_body : RigidBody3D
+var grabbed_body : RigidBody3D :
+	get: return _grabbed_body
 	set(value):
-		if _is_reaching == value: return
-		_is_reaching = value
+		if _grabbed_body == value: return
+		
+		if _grabbed_body:
+			_grabbed_body.collision_layer = stored_collision_layer
+			_grabbed_body.collision_mask = stored_collision_mask
 
-		get_parent().remove_child(self)
-		if _is_reaching:
-			target_node.add_child(self)
-			position = stored_position
-		else:
-			origin_node.add_child(self)
-			stored_position = position
-			position = Vector3.ZERO
+		_grabbed_body = value
+		grip_joint.node_b = _grabbed_body.get_path() if _grabbed_body != null else ^""
+
+		if _grabbed_body:
+			stored_collision_layer = _grabbed_body.collision_layer
+			stored_collision_mask = _grabbed_body.collision_mask
+
+			_grabbed_body.collision_layer = 0
+			_grabbed_body.set_collision_mask_value(3, false)
+
+
+func _process(delta: float) -> void:
+	if hands.is_rotating:
+		self.global_rotate(hands.camera.global_basis.x, mouse_input.y * delta)
+		self.global_rotate(hands.camera.global_basis.y, mouse_input.x * delta)
+		# self.rotation += Vector3(mouse_input.y, mouse_input.x, 0.0) * delta
+	mouse_input = Vector2.ZERO
 
 
 func _input(event: InputEvent) -> void:
-	if is_right_hand:
-		pass
-		if event.is_action_pressed("hand_right"):
-			is_reaching = true
-		elif event.is_action_released("hand_right"):
-			is_reaching = false
-	else:
-		if event.is_action_pressed("hand_left"):
-			is_reaching = true
-		elif event.is_action_released("hand_left"):
-			is_reaching = false
-		
-
-
+	if event is InputEventMouseMotion:
+		mouse_input = event.relative

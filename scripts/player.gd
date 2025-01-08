@@ -53,7 +53,7 @@ func _input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 
-	if not hands.is_reaching:
+	if not hands.is_indexing and not hands.is_rotating:
 		var turn_axis := Input.get_vector("look_left", "look_right", "look_up", "look_down")
 		self.rotation += Vector3.UP * (turn_mouse_axis.x * mouse_turn_speed + turn_axis.x * turn_speed) * delta * -1.0
 		pov.rotation += Vector3.RIGHT * (turn_mouse_axis.y * mouse_turn_speed + turn_axis.y * turn_speed) * delta * -1.0
@@ -76,6 +76,7 @@ func _physics_process(delta: float) -> void:
 			try_ledgegrab()
 
 	move_and_slide()
+
 
 func try_ledgegrab() -> void:
 	if is_ledgegrab_exhausted or is_on_floor() or self.velocity.y >= 0.0 or not ledge_sensor.is_colliding(): return

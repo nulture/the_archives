@@ -1,9 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://bowekhs5mnpfs"]
+[gd_scene load_steps=8 format=3 uid="uid://bowekhs5mnpfs"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_g6rkt"]
 [ext_resource type="Script" path="res://scripts/hands.gd" id="2_dfmdk"]
-[ext_resource type="Script" path="res://scenes/cast_targeter.gd" id="4_j15pa"]
-[ext_resource type="Script" path="res://scenes/raycast_end.gd" id="5_pc0bj"]
+[ext_resource type="Script" path="res://scripts/hand.gd" id="3_nkha4"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4ojsg"]
 radius = 0.333
@@ -14,18 +13,13 @@ size = Vector3(0.5, 0.01, 0.01)
 [sub_resource type="SphereShape3D" id="SphereShape3D_77xbh"]
 radius = 0.15
 
-[sub_resource type="QuadMesh" id="QuadMesh_7fi61"]
-size = Vector2(0.25, 0.25)
-
-[sub_resource type="SphereMesh" id="SphereMesh_y7ix3"]
+[sub_resource type="SphereMesh" id="SphereMesh_e1wlp"]
 radius = 0.1
 height = 0.2
 
-[sub_resource type="BoxMesh" id="BoxMesh_sfe86"]
-size = Vector3(0.1, 0.1, 0.1)
-
 [node name="player" type="CharacterBody3D"]
-collision_layer = 2
+collision_layer = 4
+collision_mask = 3
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
@@ -37,6 +31,7 @@ shape = SubResource("CapsuleShape3D_4ojsg")
 [node name="ledge_sensor" type="ShapeCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, -0.4)
 shape = SubResource("BoxShape3D_7cxpb")
+collision_mask = 3
 
 [node name="pov" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.158843)
@@ -44,48 +39,30 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.158843)
 [node name="camera" type="Camera3D" parent="pov"]
 current = true
 
-[node name="hands_controller" type="Node" parent="pov/camera" node_paths=PackedStringArray("cast", "hand_right", "target_node")]
+[node name="hands_controller" type="Node" parent="pov/camera" node_paths=PackedStringArray("hand_right")]
 script = ExtResource("2_dfmdk")
-cast = NodePath("../hand_cast")
 hand_right = NodePath("../arm_r/hand_r")
-target_node = NodePath("../target_r")
+mask = 10
 
 [node name="arm_r" type="Node3D" parent="pov/camera"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.1, 0)
 
-[node name="hand_r" type="Area3D" parent="pov/camera/arm_r"]
-monitorable = false
+[node name="hand_r" type="AnimatableBody3D" parent="pov/camera/arm_r" node_paths=PackedStringArray("hands")]
+collision_layer = 0
+collision_mask = 0
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+sync_to_physics = false
+script = ExtResource("3_nkha4")
+hands = NodePath("../../hands_controller")
 
 [node name="shape" type="CollisionShape3D" parent="pov/camera/arm_r/hand_r"]
 shape = SubResource("SphereShape3D_77xbh")
 
+[node name="grip_joint" type="Generic6DOFJoint3D" parent="pov/camera/arm_r/hand_r"]
+node_a = NodePath("..")
+
 [node name="preview_mesh" type="MeshInstance3D" parent="pov/camera/arm_r/hand_r"]
-mesh = SubResource("QuadMesh_7fi61")
+mesh = SubResource("SphereMesh_e1wlp")
 skeleton = NodePath("")
-
-[node name="interaction_label" type="Label3D" parent="pov/camera/arm_r/hand_r"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
-text = "Book"
-font_size = 12
-outline_size = 2
-
-[node name="target_r" type="Node3D" parent="pov/camera"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
-
-[node name="preview_mesh" type="MeshInstance3D" parent="pov/camera/target_r"]
-mesh = SubResource("SphereMesh_y7ix3")
-skeleton = NodePath("")
-
-[node name="hand_cast" type="RayCast3D" parent="pov/camera" node_paths=PackedStringArray("target_node")]
-target_position = Vector3(0, 0, -1)
-collision_mask = 17
-hit_from_inside = true
-script = ExtResource("4_j15pa")
-target_node = NodePath("../target_r")
-
-[node name="preview_mesh" type="Node3D" parent="pov/camera/hand_cast"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
-script = ExtResource("5_pc0bj")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="pov/camera/hand_cast/preview_mesh"]
-mesh = SubResource("BoxMesh_sfe86")
