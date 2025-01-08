@@ -41,13 +41,16 @@ current = true
 
 [node name="hands_controller" type="Node" parent="pov/camera" node_paths=PackedStringArray("hand_right")]
 script = ExtResource("2_dfmdk")
-hand_right = NodePath("../arm_r/hand_r")
+hand_right = NodePath("../arm_r/hand_rest_r/hand_r")
 mask = 10
 
 [node name="arm_r" type="Node3D" parent="pov/camera"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.1, 0)
 
-[node name="hand_r" type="AnimatableBody3D" parent="pov/camera/arm_r" node_paths=PackedStringArray("hands")]
+[node name="hand_rest_r" type="Node3D" parent="pov/camera/arm_r"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.238421, -0.208955, -0.407919)
+
+[node name="hand_r" type="AnimatableBody3D" parent="pov/camera/arm_r/hand_rest_r" node_paths=PackedStringArray("hands")]
 collision_layer = 0
 collision_mask = 0
 axis_lock_angular_x = true
@@ -55,14 +58,14 @@ axis_lock_angular_y = true
 axis_lock_angular_z = true
 sync_to_physics = false
 script = ExtResource("3_nkha4")
-hands = NodePath("../../hands_controller")
+hands = NodePath("../../../hands_controller")
 
-[node name="shape" type="CollisionShape3D" parent="pov/camera/arm_r/hand_r"]
+[node name="shape" type="CollisionShape3D" parent="pov/camera/arm_r/hand_rest_r/hand_r"]
 shape = SubResource("SphereShape3D_77xbh")
 
-[node name="grip_joint" type="Generic6DOFJoint3D" parent="pov/camera/arm_r/hand_r"]
+[node name="grip_joint" type="Generic6DOFJoint3D" parent="pov/camera/arm_r/hand_rest_r/hand_r"]
 node_a = NodePath("..")
 
-[node name="preview_mesh" type="MeshInstance3D" parent="pov/camera/arm_r/hand_r"]
+[node name="preview_mesh" type="MeshInstance3D" parent="pov/camera/arm_r/hand_rest_r/hand_r"]
 mesh = SubResource("SphereMesh_e1wlp")
 skeleton = NodePath("")

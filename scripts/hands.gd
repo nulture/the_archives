@@ -21,6 +21,7 @@ var is_reaching : bool :
 		if _is_reaching:
 			pass
 		else:
+			hand_right.position = Vector3.ZERO
 			is_indexing = false
 			is_rotating = false
 
@@ -33,8 +34,6 @@ var is_indexing : bool :
 
 		Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN if _is_indexing else Input.MOUSE_MODE_CAPTURED
 
-		if _is_indexing:
-			hand_right.position = Vector3.ZERO
 
 
 var _is_rotating : bool
@@ -73,18 +72,15 @@ func _input(event: InputEvent) -> void:
 
 	if is_reaching:
 		if event.is_action_pressed("hand_modifier"):
-			is_indexing = true
+			is_rotating = true
 		if event.is_action_released("hand_modifier"):
-			is_indexing = false
+			is_rotating = false
 
 		if event.is_action_pressed("hand_left"):
-			is_rotating = true
 			if hand_right.grabbed_body:
 				try_release()
 			else:
 				try_grab()
-		elif event.is_action_released("hand_left"):
-			is_rotating = false
 
 
 func try_grab() -> void:

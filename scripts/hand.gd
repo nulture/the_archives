@@ -34,7 +34,6 @@ func _process(delta: float) -> void:
 	if hands.is_rotating:
 		self.global_rotate(hands.camera.global_basis.x, mouse_input.y * delta)
 		self.global_rotate(hands.camera.global_basis.y, mouse_input.x * delta)
-		# self.rotation += Vector3(mouse_input.y, mouse_input.x, 0.0) * delta
 	mouse_input = Vector2.ZERO
 
 
