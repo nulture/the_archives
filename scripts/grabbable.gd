@@ -1,5 +1,5 @@
 
-class_name Grabbable extends PhysicsBody3D
+class_name Grabbable extends RigidBody3D
 
 @export var take_with_you : bool = true
 

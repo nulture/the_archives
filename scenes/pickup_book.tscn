@@ -10,13 +10,14 @@ size = Vector3(0.6, 0.8, 0.2)
 size = Vector3(0.6, 0.8, 0.2)
 
 [node name="pickup" instance=ExtResource("1_xfykn")]
+angular_damp = 5.0
 
 [node name="book" type="Node" parent="." index="0" node_paths=PackedStringArray("title_label", "spine_label")]
 script = ExtResource("2_u5mel")
 title_label = NodePath("../title")
 spine_label = NodePath("../spine")
-title = "The Past And Path Of The Light"
-author = "Ungagoon"
+title = "Speech Frog"
+author = "Fart Fieldquill"
 
 [node name="shape" parent="." index="1"]
 shape = SubResource("BoxShape3D_uv7rx")
@@ -34,7 +35,7 @@ alpha_scissor_threshold = 0.05
 texture_filter = 0
 modulate = Color(0, 0, 0, 1)
 outline_modulate = Color(0, 0, 0, 0)
-text = "The Past And Path Of The Light"
+text = "Speech Frog"
 outline_size = 0
 autowrap_mode = 2
 width = 290.0
@@ -49,7 +50,7 @@ alpha_scissor_threshold = 0.05
 texture_filter = 0
 modulate = Color(0, 0, 0, 1)
 outline_modulate = Color(0, 0, 0, 0)
-text = "Ungagoon"
+text = "Fart Fieldquill"
 outline_size = 0
 autowrap_mode = 2
 width = 290.0

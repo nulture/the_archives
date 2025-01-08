@@ -68,11 +68,14 @@ sync_to_physics = false
 script = ExtResource("3_nkha4")
 hands = NodePath("../../../hands_controller")
 
+[node name="grip_joint" type="JoltGeneric6DOFJoint3D" parent="pov/camera/arm_r/hand_rest_r/hand_r"]
+angular_limit_x/enabled = false
+angular_limit_y/enabled = false
+angular_limit_z/enabled = false
+node_a = NodePath("..")
+
 [node name="shape" type="CollisionShape3D" parent="pov/camera/arm_r/hand_rest_r/hand_r"]
 shape = SubResource("SphereShape3D_77xbh")
-
-[node name="grip_joint" type="Generic6DOFJoint3D" parent="pov/camera/arm_r/hand_rest_r/hand_r"]
-node_a = NodePath("..")
 
 [node name="preview_mesh" type="MeshInstance3D" parent="pov/camera/arm_r/hand_rest_r/hand_r"]
 mesh = SubResource("SphereMesh_e1wlp")

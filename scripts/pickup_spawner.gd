@@ -9,6 +9,6 @@ func spawn(at_position: Vector3, at_rotation: Vector3) -> RigidBody3D:
 	self.get_parent().add_child(result)
 	result.global_position = at_position
 	result.global_rotation = at_rotation
-	if random_rotation:
-		result.rotation_degrees.y += 90.0
+	# if random_rotation:
+	# 	result.rotation_degrees.y += 90.0
 	return result

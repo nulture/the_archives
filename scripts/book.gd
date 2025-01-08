@@ -96,8 +96,15 @@ static func create_new_author(last_name_letter := "") -> String:
 
 	while last_name_ender and (last_name_ender[0] == last_name_starter[-1] or (VOWELS.has(last_name_ender[0]) and VOWELS.has(last_name_starter[-1]))):
 		last_name_ender = last_name_ender.substr(1)
+
+	var last_name = last_name_starter + last_name_ender
+
+	var first_random := RandomNumberGenerator.new()
+	first_random.seed = hash(last_name)
+
+	var first_name : String = data["authors"]["last_names"][first_random.randi_range(0, data["authors"]["last_names"].size() - 1)]
 	
-	var result : String = last_name_starter + last_name_ender
+	var result : String = first_name + " " + last_name
 	return result.capitalize()
 
 static func pick_random_from_array(array : PackedStringArray) -> String:
