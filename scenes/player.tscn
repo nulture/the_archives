@@ -24,6 +24,14 @@ axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
 script = ExtResource("1_g6rkt")
+walk_slow_speed = null
+walk_fast_speed = null
+walk_damp = null
+walk_air_control = null
+turn_speed = null
+mouse_turn_speed = null
+jump_strength = null
+ledgegrab_strength = null
 
 [node name="shape" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_4ojsg")

@@ -133,6 +133,10 @@ quit={
 3d_physics/layer_3="pawn"
 3d_physics/layer_4="grabbable"
 
+[physics]
+
+3d/physics_engine="GodotPhysics3D"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

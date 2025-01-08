@@ -1,0 +1,24 @@
+{
+	"verbs": [
+		{
+			"word": "pick",
+			"present": "picks",
+			"past": "picked",
+			"noun": "picking",
+			"genre": "biology"
+		},
+		{
+			"word": "mutate",
+			"present": "mutates",
+			"past": "mutated",
+			"noun": "mutating",
+			"genre": "morph"	
+		}
+	],
+	"nouns": [
+		{
+			"word": "magic",
+			"genre": "general"
+		}
+	]
+}

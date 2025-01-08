@@ -9,8 +9,8 @@ var mouse_input : Vector2
 
 var stored_collision_layer : int
 var stored_collision_mask : int
-var _grabbed_body : RigidBody3D
-var grabbed_body : RigidBody3D :
+var _grabbed_body : Grabbable
+var grabbed_body : Grabbable :
 	get: return _grabbed_body
 	set(value):
 		if _grabbed_body == value: return
@@ -20,14 +20,18 @@ var grabbed_body : RigidBody3D :
 			_grabbed_body.collision_mask = stored_collision_mask
 
 		_grabbed_body = value
-		grip_joint.node_b = _grabbed_body.get_path() if _grabbed_body != null else ^""
+		self.rotation = Vector3.ZERO
 
 		if _grabbed_body:
 			stored_collision_layer = _grabbed_body.collision_layer
 			stored_collision_mask = _grabbed_body.collision_mask
 
-			_grabbed_body.collision_layer = 0
-			_grabbed_body.set_collision_mask_value(3, false)
+			if _grabbed_body.take_with_you:
+				_grabbed_body.global_position = self.global_position
+				_grabbed_body.collision_layer = 0
+				_grabbed_body.set_collision_mask_value(3, false)
+			
+		grip_joint.node_b = _grabbed_body.get_path() if _grabbed_body != null else ^""
 
 
 func _process(delta: float) -> void:

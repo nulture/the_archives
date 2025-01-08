@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bedd3sw3jvkjh"]
+
+[ext_resource type="Script" path="res://scripts/grabbable.gd" id="1_jvrhj"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kb7ba"]
+size = Vector3(0.4, 0.4, 0.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_20xoc"]
+size = Vector3(0.4, 0.4, 0.4)
+
+[node name="pickup" type="RigidBody3D"]
+collision_layer = 8
+collision_mask = 15
+script = ExtResource("1_jvrhj")
+
+[node name="shape" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_kb7ba")
+
+[node name="mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_20xoc")

@@ -9,7 +9,7 @@ class_name Hands extends Node
 
 @onready var camera : Camera3D = self.get_parent()
 
-var _reached_body : RigidBody3D
+var _reached_object : CollisionObject3D
 
 var _is_reaching : bool
 var is_reaching : bool :
@@ -21,6 +21,9 @@ var is_reaching : bool :
 		if _is_reaching:
 			pass
 		else:
+			if hand_right.grabbed_body and not hand_right.grabbed_body.take_with_you:
+				hand_right.grabbed_body = null
+
 			hand_right.position = Vector3.ZERO
 			is_indexing = false
 			is_rotating = false
@@ -45,7 +48,7 @@ var is_rotating : bool :
 
 
 func _process(delta: float) -> void:
-	_reached_body = null
+	_reached_object = null
 	if is_reaching:
 		var mouse_position := get_viewport().get_mouse_position()
 		var space := camera.get_world_3d().direct_space_state
@@ -60,8 +63,8 @@ func _process(delta: float) -> void:
 				hand_right.global_position = rqp.to
 			else:
 				hand_right.global_position = result["position"]
-				if result["collider"] is RigidBody3D:
-					_reached_body = result["collider"]
+				if result["collider"] is CollisionObject3D:
+					_reached_object = result["collider"]
 
 
 func _input(event: InputEvent) -> void:
@@ -81,12 +84,18 @@ func _input(event: InputEvent) -> void:
 				try_release()
 			else:
 				try_grab()
+		elif event.is_action_released("hand_left"):
+			if hand_right.grabbed_body and not hand_right.grabbed_body.take_with_you:
+				try_release()
 
 
 func try_grab() -> void:
-	if not _reached_body: return
-	hand_right.grabbed_body = _reached_body
-	hand_right.position *= 0.75
+	if _reached_object is PickupSpawner:
+		_reached_object = _reached_object.spawn(hand_right.global_position, camera.global_rotation)
+	if _reached_object is Grabbable:
+		hand_right.grabbed_body = _reached_object
+		hand_right.position *= 0.75
+
 
 
 func try_release() -> void:

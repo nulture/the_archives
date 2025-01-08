@@ -1,7 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://dmad8o0p0el54"]
+[gd_scene load_steps=18 format=3 uid="uid://dmad8o0p0el54"]
 
 [ext_resource type="Material" uid="uid://do6rreoj2soij" path="res://assets/materials/square_tiles_03.tres" id="1_vhy75"]
+[ext_resource type="Script" path="res://scripts/pickup_spawner.gd" id="2_g50i0"]
 [ext_resource type="PackedScene" uid="uid://bowekhs5mnpfs" path="res://scenes/player.tscn" id="2_musby"]
+[ext_resource type="PackedScene" uid="uid://bedd3sw3jvkjh" path="res://scenes/pickup.tscn" id="3_csrje"]
+[ext_resource type="Script" path="res://scripts/grabbable.gd" id="5_a02w6"]
+[ext_resource type="PackedScene" uid="uid://dg5lcussej6du" path="res://scenes/pickup_book.tscn" id="6_r62bb"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6jnbb"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -25,13 +29,25 @@ size = Vector2(20, 20)
 
 [sub_resource type="BoxMesh" id="BoxMesh_6dohc"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_kb7ba"]
-size = Vector3(0.4, 0.4, 0.4)
+[sub_resource type="BoxShape3D" id="BoxShape3D_iu2ae"]
+size = Vector3(4, 4, 2)
 
-[sub_resource type="BoxMesh" id="BoxMesh_20xoc"]
-size = Vector3(0.4, 0.4, 0.4)
+[sub_resource type="BoxMesh" id="BoxMesh_q07bi"]
+size = Vector3(4, 4, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5acl1"]
+size = Vector3(1, 2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ymp61"]
+size = Vector3(1, 2, 1)
 
 [node name="world" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+light_color = Color(0.67, 0.7745, 1, 1)
+light_energy = 0.1
+shadow_enabled = true
 
 [node name="environment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_kx60l")
@@ -49,12 +65,28 @@ skeleton = NodePath("../..")
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -5)
 collision_layer = 19
+script = ExtResource("2_g50i0")
+spawn_prefab = ExtResource("6_r62bb")
+random_rotation = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_mqss7")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 mesh = SubResource("BoxMesh_6dohc")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 2)
+collision_layer = 19
+script = ExtResource("2_g50i0")
+spawn_prefab = ExtResource("6_r62bb")
+random_rotation = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
+shape = SubResource("BoxShape3D_iu2ae")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3"]
+mesh = SubResource("BoxMesh_q07bi")
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="."]
 transform = Transform3D(5.89036, 0, 0, 0, 0.890141, -2.1394, 0, 0.455685, 4.17914, 4.28234, 0.553404, -5.27885)
@@ -69,13 +101,36 @@ mesh = SubResource("BoxMesh_6dohc")
 [node name="player" parent="." instance=ExtResource("2_musby")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1441, 0.062)
 
-[node name="pickup" type="RigidBody3D" parent="."]
+[node name="pickup" parent="." instance=ExtResource("3_csrje")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -4)
-collision_layer = 8
-collision_mask = 15
 
-[node name="shape" type="CollisionShape3D" parent="pickup"]
-shape = SubResource("BoxShape3D_kb7ba")
+[node name="SliderJoint3D" type="SliderJoint3D" parent="."]
+node_a = NodePath("../world_floor")
+node_b = NodePath("../ladder")
+linear_limit/upper_distance = 4.0
 
-[node name="preview_mesh" type="MeshInstance3D" parent="pickup"]
-mesh = SubResource("BoxMesh_20xoc")
+[node name="ladder" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 0)
+collision_layer = 2
+collision_mask = 0
+axis_lock_linear_y = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+script = ExtResource("5_a02w6")
+take_with_you = false
+
+[node name="shape" type="CollisionShape3D" parent="ladder"]
+shape = SubResource("BoxShape3D_5acl1")
+
+[node name="mesh" type="MeshInstance3D" parent="ladder"]
+mesh = SubResource("BoxMesh_ymp61")
+skeleton = NodePath("../../StaticBody3D")
+
+[node name="pickup2" parent="." instance=ExtResource("6_r62bb")]
+transform = Transform3D(1, 0, 0, 0, 0.758021, 0.652231, 0, -0.652231, 0.758021, -1.00341, 0.504885, -2.9665)
+
+[node name="label" parent="pickup2" index="2"]
+predefined = true
+
+[editable path="pickup2"]
