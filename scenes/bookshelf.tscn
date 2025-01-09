@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://c3tuv00ybles7"]
 
-[ext_resource type="Script" path="res://scenes/book_spawner.gd" id="1_h2uu2"]
+[ext_resource type="Script" path="res://scripts/book_spawner.gd" id="1_h2uu2"]
 [ext_resource type="PackedScene" uid="uid://dg5lcussej6du" path="res://scenes/pickup_book.tscn" id="2_nh6ub"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o23j3"]

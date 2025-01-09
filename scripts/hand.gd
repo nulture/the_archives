@@ -17,30 +17,35 @@ var grabbed_body : Grabbable :
 		if _grabbed_body == value: return
 		
 		if _grabbed_body:
-			_grabbed_body.angular_damp = stored_angular_damp
-			_grabbed_body.collision_layer = stored_collision_layer
-			_grabbed_body.collision_mask = stored_collision_mask
+			_grabbed_body.owning_hand = null
+			if _grabbed_body.physics_handle_motion:
+				_grabbed_body.angular_damp = stored_angular_damp
+				_grabbed_body.collision_layer = stored_collision_layer
+				_grabbed_body.collision_mask = stored_collision_mask
 
 		_grabbed_body = value
 		# self.rotation = Vector3.ZERO
 
+		grip_joint.node_b = ^""
 		if _grabbed_body:
-			stored_angular_damp = _grabbed_body.angular_damp
-			stored_collision_layer = _grabbed_body.collision_layer
-			stored_collision_mask = _grabbed_body.collision_mask
+			_grabbed_body.owning_hand = self
+			if _grabbed_body.physics_handle_motion:
+				stored_angular_damp = _grabbed_body.angular_damp
+				stored_collision_layer = _grabbed_body.collision_layer
+				stored_collision_mask = _grabbed_body.collision_mask
 
-			_grabbed_body.angular_damp = 30.0
+				_grabbed_body.angular_damp = 30.0
 
-			if _grabbed_body.take_with_you:
-				_grabbed_body.global_position = self.global_position
-				_grabbed_body.collision_layer = 0
-				_grabbed_body.set_collision_mask_value(3, false)
-			
-		grip_joint.node_b = _grabbed_body.get_path() if _grabbed_body != null else ^""
+				if _grabbed_body.take_with_you:
+					_grabbed_body.global_position = self.global_position
+					_grabbed_body.collision_layer = 0
+					_grabbed_body.set_collision_mask_value(3, false)
+				
+				grip_joint.node_b = _grabbed_body.get_path()
 
 
 func _physics_process(delta: float) -> void:
-	if grabbed_body:
+	if grabbed_body and grabbed_body.physics_handle_motion:
 		if grabbed_body.take_with_you:
 			grabbed_body.rotation += hands.delta_camera_rotation * Vector3.UP
 			

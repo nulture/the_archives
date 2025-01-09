@@ -1,12 +1,12 @@
-[gd_scene load_steps=17 format=3 uid="uid://dmad8o0p0el54"]
+[gd_scene load_steps=18 format=3 uid="uid://dmad8o0p0el54"]
 
 [ext_resource type="Material" uid="uid://do6rreoj2soij" path="res://assets/materials/square_tiles_03.tres" id="1_vhy75"]
-[ext_resource type="Script" path="res://scenes/book_spawner.gd" id="2_4bom4"]
+[ext_resource type="Script" path="res://scripts/book_spawner.gd" id="2_4bom4"]
 [ext_resource type="PackedScene" uid="uid://bowekhs5mnpfs" path="res://scenes/player.tscn" id="2_musby"]
 [ext_resource type="PackedScene" uid="uid://bedd3sw3jvkjh" path="res://scenes/pickup.tscn" id="3_csrje"]
-[ext_resource type="Script" path="res://scripts/grabbable.gd" id="5_a02w6"]
 [ext_resource type="PackedScene" uid="uid://dg5lcussej6du" path="res://scenes/pickup_book.tscn" id="6_r62bb"]
 [ext_resource type="PackedScene" uid="uid://c3tuv00ybles7" path="res://scenes/bookshelf.tscn" id="7_1a08x"]
+[ext_resource type="Script" path="res://scripts/tracked_grabbable.gd" id="8_bk4gp"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6jnbb"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -30,10 +30,17 @@ size = Vector2(20, 20)
 
 [sub_resource type="BoxMesh" id="BoxMesh_6dohc"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_5acl1"]
+[sub_resource type="Curve3D" id="Curve3D_pdud0"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, 0, 6, 0, -2, 0, 0, 0, 0, 0, 0, 6, 0, -6),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_48ee7"]
 size = Vector3(1, 2, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_ymp61"]
+[sub_resource type="BoxMesh" id="BoxMesh_k7q2v"]
 size = Vector3(1, 2, 1)
 
 [node name="world" type="Node3D"]
@@ -82,58 +89,52 @@ mesh = SubResource("BoxMesh_6dohc")
 
 [node name="player" parent="." instance=ExtResource("2_musby")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1441, 0.062)
-walk_slow_speed = 1.0
-walk_fast_speed = 1.5
-walk_damp = 0.2
-walk_air_control = 0.125
-turn_speed = 3.0
-mouse_turn_speed = 1.0
-jump_strength = 4.0
-ledgegrab_strength = 6.0
 
 [node name="pickup" parent="." instance=ExtResource("3_csrje")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -4)
-
-[node name="SliderJoint3D" type="SliderJoint3D" parent="."]
-node_a = NodePath("../world_floor")
-node_b = NodePath("../ladder")
-linear_limit/upper_distance = 4.0
-
-[node name="ladder" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 0)
-collision_layer = 2
-collision_mask = 0
-axis_lock_linear_y = true
-axis_lock_angular_x = true
-axis_lock_angular_y = true
-axis_lock_angular_z = true
-script = ExtResource("5_a02w6")
-take_with_you = false
-
-[node name="shape" type="CollisionShape3D" parent="ladder"]
-shape = SubResource("BoxShape3D_5acl1")
-
-[node name="mesh" type="MeshInstance3D" parent="ladder"]
-mesh = SubResource("BoxMesh_ymp61")
-skeleton = NodePath("../../StaticBody3D")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8679, 2.14244, -2.98521)
 
 [node name="pickup2" parent="." instance=ExtResource("6_r62bb")]
-transform = Transform3D(1, 0, 0, 0, 0.0748049, 0.997199, 0, -0.997199, 0.0748049, -1.00341, 0.504885, -2.9665)
+transform = Transform3D(1, 0, 0, 0, 0.0748049, 0.997199, 0, -0.997199, 0.0748049, -1.9186, 0.504885, -2.8687)
 
 [node name="pickup3" parent="." instance=ExtResource("6_r62bb")]
-transform = Transform3D(0.969702, 0.243608, -0.0182742, 0, 0.0748049, 0.997199, 0.244292, -0.966985, 0.0725384, -1.00341, 0.720165, -2.9665)
+transform = Transform3D(0.969702, 0.243608, -0.0182742, 0, 0.0748049, 0.997199, 0.244292, -0.966985, 0.0725384, -1.9186, 0.720165, -2.8687)
 
 [node name="pickup4" parent="." instance=ExtResource("6_r62bb")]
-transform = Transform3D(0.960736, 0.276688, -0.0207558, 0, 0.0748049, 0.997199, 0.277466, -0.958044, 0.0718677, -1.0018, 0.944186, -2.95826)
+transform = Transform3D(0.960736, 0.276688, -0.0207558, 0, 0.0748049, 0.997199, 0.277466, -0.958044, 0.0718677, -1.91699, 0.944186, -2.86046)
 
 [node name="pickup5" parent="." instance=ExtResource("6_r62bb")]
-transform = Transform3D(0.97307, -0.229863, 0.0172431, 0, 0.0748049, 0.997199, -0.230508, -0.970344, 0.0727904, -1.00341, 1.16042, -2.9665)
+transform = Transform3D(0.97307, -0.229863, 0.0172431, 0, 0.0748049, 0.997199, -0.230508, -0.970344, 0.0727904, -1.9186, 1.16042, -2.8687)
 
 [node name="pickup6" parent="." instance=ExtResource("6_r62bb")]
-transform = Transform3D(0.990382, -0.137973, 0.0103501, 0, 0.0748049, 0.997199, -0.138361, -0.987607, 0.0740854, -1.00341, 1.39731, -2.9665)
+transform = Transform3D(0.0950637, -0.992682, 0.0744661, -0.0964493, 0.0652682, 0.993196, -0.990788, -0.101599, -0.089539, -1.92045, 1.35584, -2.91645)
 
 [node name="pickup7" parent="." instance=ExtResource("6_r62bb")]
-transform = Transform3D(0.973439, 0.228304, -0.0171262, 0, 0.0748049, 0.997199, 0.228946, -0.970712, 0.072818, -1.01292, 1.65558, -2.9665)
+transform = Transform3D(0.289148, -0.957092, -0.0192041, 0.0542468, -0.00364675, 0.998522, -0.955746, -0.289762, 0.0508647, -1.88035, 1.71483, -2.94864)
 
 [node name="bookshelf" parent="." instance=ExtResource("7_1a08x")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3)
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -4.00457, 0.00415611, -5.00739)
+
+[node name="ladder_path" type="Path3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2, 1, -3)
+curve = SubResource("Curve3D_pdud0")
+
+[node name="ladder" type="PathFollow3D" parent="ladder_path"]
+transform = Transform3D(-4.3711e-08, 0, -0.999991, 0, 1, 0, 0.999991, 0, -4.3711e-08, 0.998997, 0, 0)
+progress = 1.0
+loop = false
+
+[node name="body" type="AnimatableBody3D" parent="ladder_path/ladder"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+collision_layer = 2
+collision_mask = 0
+sync_to_physics = false
+script = ExtResource("8_bk4gp")
+physics_handle_motion = false
+take_with_you = false
+
+[node name="shape" type="CollisionShape3D" parent="ladder_path/ladder/body"]
+shape = SubResource("BoxShape3D_48ee7")
+
+[node name="mesh" type="MeshInstance3D" parent="ladder_path/ladder/body"]
+mesh = SubResource("BoxMesh_k7q2v")
+skeleton = NodePath("../../../../StaticBody3D")

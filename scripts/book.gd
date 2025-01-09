@@ -39,7 +39,7 @@ static func _static_init() -> void:
 
 
 func _ready() -> void:
-	if not predefined and not Engine.is_editor_hint():
+	if not predefined:
 		randomize_stats()
 
 

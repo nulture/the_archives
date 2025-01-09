@@ -5,8 +5,8 @@ extends PickupSpawner
 @export var genre : String = "General"
 @export_range(0, 1, 0.05) var backwards_chance : float = 0.05
 
-func spawn(at_position: Vector3, at_rotation: Vector3) -> RigidBody3D:
-	var result := super.spawn(at_position, at_rotation)
+func grab(at_position: Vector3, at_rotation: Vector3) -> RigidBody3D:
+	var result := super.grab(at_position, at_rotation)
 	if randf() < backwards_chance:
 		result.rotation_degrees.y -= 90.0
 	else:

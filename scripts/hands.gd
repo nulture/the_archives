@@ -97,9 +97,8 @@ func _input(event: InputEvent) -> void:
 
 
 func try_grab() -> void:
-	if _reached_object is PickupSpawner:
-		_reached_object = _reached_object.spawn(hand_right.global_position, camera.global_rotation)
 	if _reached_object is Grabbable:
+		_reached_object = _reached_object.grab(hand_right.global_position, camera.global_rotation)
 		hand_right.grabbed_body = _reached_object
 		hand_right.position *= 0.75
 
